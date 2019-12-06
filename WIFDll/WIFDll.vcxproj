@@ -217,6 +217,12 @@
   <ItemGroup>
     <ResourceCompile Include="WIFDll.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\map.bmp" />
+    <Image Include="res\map.bmp" />
+    <Image Include="res\p1.bmp" />
+    <Image Include="res\p2.bmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -46,18 +46,34 @@ void CWIF::OnPaint()
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialog::OnPaint()을(를) 호출하지 마십시오.
 	CString str;
+	CDC MemDC;
+	MemDC.CreateCompatibleDC(&dc);
 
-	if (count1 > 100 || count2 > 100) {
+	// 리소스에서 비트맵을 읽어 들여 DC에 선택
+	CBitmap bmpMask, bmpMan1, bmpMan2;
+	bmpMask.LoadBitmap(IDB_BITMAP1);
+	MemDC.SelectObject(&bmpMask);
+	dc.BitBlt(0, 0, 796, 468, &MemDC, 0, 0, SRCCOPY);
+
+	bmpMan1.LoadBitmap(IDB_MAN1);
+	MemDC.SelectObject(&bmpMan1);
+	dc.BitBlt(count1, 100, 25, 25, &MemDC, 0, 0, SRCPAINT);
+
+	bmpMan2.LoadBitmap(IDB_MAN2);
+	MemDC.SelectObject(&bmpMan2);
+	dc.BitBlt(count2, 350, 25, 25, &MemDC, 0, 0, SRCPAINT);
+
+	if (count1 > 700 || count2 > 700) {
 		win = count1 > count2 ? 1 : 2;
 		const char * str("end");
 		iLen = strlen(str) + 1;
 		iSent = m_Csocket.Send(LPCTSTR(str), iLen);
 		OnOK();
 	}
-		
-	str.Format(_T("O"));
-	dc.TextOutW(count1, 100,str); // 서버의 좌표
-	dc.TextOutW(count2, 300, str); // 클라이언트의 좌표
+	
+	//str.Format(_T("O"));
+	//dc.TextOutW(count1, 100,str); // 서버의 좌표
+	//dc.TextOutW(count2, 350, str); // 클라이언트의 좌표
 }
 
 

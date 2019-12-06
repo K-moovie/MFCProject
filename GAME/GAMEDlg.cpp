@@ -124,7 +124,7 @@ BOOL CGAMEDlg::OnInitDialog()
 
 	SetBackgroundColor(RGB(0, 0, 0));
 
-
+	
 	m_p1.SetFont(&m_font, TRUE);
 	m_p1.EnableWindowsTheming(FALSE); //윈도우 테마 제거
 	m_p1.SetTextColor(RGB(255, 0, 0)); //글자색 변경
@@ -135,6 +135,9 @@ BOOL CGAMEDlg::OnInitDialog()
 	m_p2.EnableWindowsTheming(FALSE); //윈도우 테마 제거
 	m_p2.SetTextColor(RGB(0, 255, 0)); //글자색 변경
 	m_p2.SetFaceColor(RGB(0, 0, 0)); //배경색 변경
+
+	m_ip = _T("localhost");
+	UpdateData(FALSE);
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -189,14 +192,14 @@ HCURSOR CGAMEDlg::OnQueryDragIcon()
 
 
 
-void CGAMEDlg::OnBnClickedButton3() // 1P
+void CGAMEDlg::OnBnClickedButton3() // 1P 서버
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_MyType = false;
 }
 
 
-void CGAMEDlg::OnBnClickedButton2() // 2P
+void CGAMEDlg::OnBnClickedButton2() // 2P 클라이언트
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	UpdateData(TRUE);

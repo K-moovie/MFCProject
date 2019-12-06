@@ -22,10 +22,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	BOOL isMe;
+	static BOOL isMe;
 	CString m_strName;
-	CMySocket m_Csocket;
-	CMySocket m_Ssocket;
+	static CMySocket m_Csocket;
+	static CMySocket m_Ssocket;
 	void OnAccept();
 	void OnClose();
 	void OnConnect();
@@ -35,9 +35,10 @@ public:
 	int count1;
 	int count2;
 	afx_msg void OnPaint();
-	int iSent;
-	int iLen;
+	static int iSent;
+	static int iLen;
 	int me;
 	int win;
 	BOOL isRight;
+	static UINT CreateThread(void *lParam);
 };

@@ -6,7 +6,13 @@
 #include "afxdialogex.h"
 
 
+
 // CWIF 대화 상자
+int CWIF::iSent;
+int CWIF::iLen;
+CMySocket CWIF::m_Csocket;
+CMySocket CWIF::m_Ssocket;
+BOOL CWIF::isMe;
 
 IMPLEMENT_DYNAMIC(CWIF, CDialog)
 
@@ -43,14 +49,15 @@ void CWIF::OnPaint()
 
 	if (count1 > 100 || count2 > 100) {
 		win = count1 > count2 ? 1 : 2;
+		const char * str("end");
+		iLen = strlen(str) + 1;
+		iSent = m_Csocket.Send(LPCTSTR(str), iLen);
 		OnOK();
 	}
 		
 	str.Format(_T("O"));
 	dc.TextOutW(count1, 100,str); // 서버의 좌표
 	dc.TextOutW(count2, 300, str); // 클라이언트의 좌표
-
-
 }
 
 
@@ -107,6 +114,10 @@ void CWIF::OnReceive() {
 			count2 += 20;
 			Invalidate(TRUE);
 		}
+		else if (strcmp(pBuf, "end") == 0) {
+			MessageBox(_T("YOU LOSE!"));
+			OnOK();
+		}
 			
 	}
 
@@ -156,12 +167,7 @@ void CWIF::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 					me = 0;
 					count1 += 20;
 					Invalidate(TRUE);
-					const char * str1("count1");
-					iLen = strlen(str1) + 1;
-					iSent = m_Csocket.Send(LPCTSTR(str1), iLen);
-					if (iSent == SOCKET_ERROR) {
-						MessageBox(_T("send Error"));
-					}
+					AfxBeginThread(CreateThread, this); // 쓰레드
 				}
 				isRight = FALSE;
 				break;
@@ -189,12 +195,7 @@ void CWIF::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 					me = 0;
 					count2 += 20;
 					Invalidate(TRUE);
-					const char * str1("count2");
-					iLen = strlen(str1) + 1;
-					iSent = m_Csocket.Send(LPCTSTR(str1), iLen);
-					if (iSent == SOCKET_ERROR) {
-						MessageBox(_T("send Error"));
-					}
+					AfxBeginThread(CreateThread, this); //쓰레드
 				}
 				isRight = FALSE;
 				break;
@@ -207,6 +208,24 @@ void CWIF::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	
 }
-/*
 
-*/
+UINT CWIF::CreateThread(void *lParam) {
+	CWIF *pDlg = (CWIF*)lParam;
+	const char * str1("count1");
+	const char * str2("count2");
+	if (!isMe) {
+		iLen = strlen(str1) + 1;
+		iSent = m_Csocket.Send(LPCTSTR(str1), iLen);
+		if (iSent == SOCKET_ERROR) {
+			AfxMessageBox(_T("send Error"));
+		}
+	}
+	else if (isMe) {
+		iLen = strlen(str2) + 1;
+		iSent = m_Csocket.Send(LPCTSTR(str2), iLen);
+		if (iSent == SOCKET_ERROR) {
+			AfxMessageBox(_T("send Error"));
+		}
+	}
+	return 0;
+}

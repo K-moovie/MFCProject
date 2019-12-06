@@ -82,7 +82,7 @@ void CSelect::OnBnClickedGame2()
 void CSelect::OnBnClickedGame3()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CWIF wif;
+	CWIF wif; 
 	wif.isMe = CGAMEDlg::m_MyType;
 	wif.m_strName = CGAMEDlg::m_ip;
 	wif.DoModal();
@@ -90,5 +90,7 @@ void CSelect::OnBnClickedGame3()
 	CString str;
 	str.Format(_T("%d"), i);
 	MessageBox(str);
-	GetDlgItem(IDC_GAME3)->EnableWindow(FALSE);
+	if (i != 0) {
+		GetDlgItem(IDC_GAME3)->EnableWindow(FALSE);
+	}
 }
